@@ -1,0 +1,29 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "dimensioncakes:block/nether_cake/nether_cake_full"
+  },
+  "variants": {
+    "bites=0": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_full"
+    },
+    "bites=1": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_slice1"
+    },
+    "bites=2": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_slice2"
+    },
+    "bites=3": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_slice3"
+    },
+    "bites=4": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_slice4"
+    },
+    "bites=5": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_slice5"
+    },
+    "bites=6": {
+      "model": "dimensioncakes:block/nether_cake/nether_cake_slice6"
+    }
+  }
+}

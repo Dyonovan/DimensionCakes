@@ -1,0 +1,10 @@
+{
+	"parent": "block/cake_slice5",
+	"textures": {
+        "particle": "dimensioncakes:blocks/nether_cake/nether_cake_2",
+        "bottom": "dimensioncakes:blocks/nether_cake/nether_cake_0",
+        "top": "dimensioncakes:blocks/nether_cake/nether_cake_1",
+        "side": "dimensioncakes:blocks/nether_cake/nether_cake_2",
+        "inside": "dimensioncakes:blocks/nether_cake/nether_cake_3"
+    }
+}

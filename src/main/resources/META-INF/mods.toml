@@ -1,0 +1,28 @@
+modLoader="javafml" #mandatory
+loaderVersion="[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+[[mods]] #mandatory
+modId="dimensioncakes"
+version="${file.jarVersion}"
+displayName="Dimension Cakes"
+# updateJSONURL="https://change.me.example.invalid/updates.json"
+# displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
+# logoFile="examplemod.png" #optional
+# credits="Thanks for this example mod goes to Java" #optional
+authors="Dyonovan"
+description='''
+Cakes that allow travel to other dimensions
+'''
+[[dependencies.dimensioncakes]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.dimensioncakes]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"
