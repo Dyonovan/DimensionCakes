@@ -29,14 +29,15 @@ public class OverworldCakeBlock extends BaseCakeBlock {
         if (world.isClientSide) return InteractionResult.SUCCESS;
 
         String repairItem = DimensionCakesConfig.GENERAL.overworldCakeRefill.get();
-        //final RegistryObject<Item> item = RegistryObject.create(new ResourceLocation(repairItem), ForgeRegistries.ITEMS);
         Item item =  ForgeRegistries.ITEMS.getValue(new ResourceLocation(repairItem));
 
-        if (player.getItemInHand(hand).getItem().equals(item) && state.getValue(BITES) != 0) {
-            BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
-            world.setBlockAndUpdate(pos, newState);
+        if (player.getItemInHand(hand).getItem().equals(item)) {
+            if (state.getValue(BITES) != 0) {
+                BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
+                world.setBlockAndUpdate(pos, newState);
 
-            player.getItemInHand(hand).shrink(1);
+                player.getItemInHand(hand).shrink(1);
+            }
             return InteractionResult.SUCCESS;
         }
 

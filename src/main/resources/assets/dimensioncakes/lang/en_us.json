@@ -12,8 +12,10 @@
     "tooltip.dimensioncakes.bites_left": "Bites Left:",
 
     "config.dimensioncakes.disableNetherPortal": "Disable the creation of Nether Portals",
-    "config.dimensioncakes.cakesStartEmpty": "Do cakes start empty and need to be filled",
+    "config.dimensioncakes.disableEndPortal": "Disable the creation of End Portals",
     "config.dimensioncakes.endCakeRefill": "Item that will refill End Cake ie: minecraft:apple",
     "config.dimensioncakes.netherCakeRefill": "Item that will refill the Nether Cake ie: minecraft:apple",
-    "config.dimensioncakes.overworldCakeRefill": "Item that will refill the Overworld Cake ie: minecraft:apple"
+    "config.dimensioncakes.overworldCakeRefill": "Item that will refill the Overworld Cake ie: minecraft:apple",
+
+    "msg.dimensioncakes.endportal": "End Portals Are Disabled"
 }

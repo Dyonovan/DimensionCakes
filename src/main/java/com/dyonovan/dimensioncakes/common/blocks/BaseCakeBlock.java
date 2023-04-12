@@ -1,6 +1,5 @@
 package com.dyonovan.dimensioncakes.common.blocks;
 
-import com.dyonovan.dimensioncakes.DimensionCakesConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
