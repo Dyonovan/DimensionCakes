@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,9 +39,10 @@ public class NetherCakeBlock extends BaseCakeBlock implements EntityBlock {
         if (world.isClientSide || player.level.dimension() == Level.NETHER) return InteractionResult.SUCCESS;
 
         String repairItem = DimensionCakesConfig.GENERAL.netherCakeRefill.get();
-        final RegistryObject<Item> item = RegistryObject.create(new ResourceLocation(repairItem), ForgeRegistries.ITEMS);
+        //final RegistryObject<Item> item = RegistryObject.create(new ResourceLocation(repairItem), ForgeRegistries.ITEMS);
+        Item item =  ForgeRegistries.ITEMS.getValue(new ResourceLocation(repairItem));
 
-        if (player.getItemInHand(hand).getItem().equals(item.get()) && state.getValue(BITES) != 0) {
+        if (player.getItemInHand(hand).getItem().equals(item) && state.getValue(BITES) != 0) {
             BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
             world.setBlockAndUpdate(pos, newState);
 

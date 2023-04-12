@@ -5,6 +5,10 @@
     "block.dimensioncakes.end_cake": "End Cake",
     "block.dimensioncakes.overworld_cake": "Overworld Cake",
 
+    "block.dimensioncakes.nether_cake.tooltip": "Refilled with %s",
+    "block.dimensioncakes.end_cake.tooltip": "Refilled with %s",
+    "block.dimensioncakes.overworld_cake.tooltip": "Refilled with %s",
+
     "tooltip.dimensioncakes.bites_left": "Bites Left:",
 
     "config.dimensioncakes.disableNetherPortal": "Disable the creation of Nether Portals",
