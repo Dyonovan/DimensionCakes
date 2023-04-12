@@ -122,11 +122,17 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.2.8'
     implementation fg.deobf("curse.maven:top-245211:3965693")
+    runtimeOnly(fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1013"))
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

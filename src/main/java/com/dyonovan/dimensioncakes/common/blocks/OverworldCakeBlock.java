@@ -1,21 +1,24 @@
 package com.dyonovan.dimensioncakes.common.blocks;
 
+import com.dyonovan.dimensioncakes.DimensionCakesConfig;
 import com.dyonovan.dimensioncakes.util.CustomTeleporter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-public class OverworldCakeBlock extends Block {
+public class OverworldCakeBlock extends BaseCakeBlock {
 
     public OverworldCakeBlock(Properties properties) {
         super(properties);
@@ -26,20 +29,33 @@ public class OverworldCakeBlock extends Block {
     public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (world.isClientSide) return InteractionResult.SUCCESS;
 
-        if (((ServerPlayer) player).getRespawnPosition() != null) {
-             ResourceKey<Level> dim = ((ServerPlayer) player).getRespawnDimension();
-             BlockPos spawnPos = ((ServerPlayer) player).getRespawnPosition();
+        String repairItem = DimensionCakesConfig.GENERAL.overworldCakeRefill.get();
+        final RegistryObject<Item> item = RegistryObject.create(new ResourceLocation(repairItem), ForgeRegistries.ITEMS);
 
-             player.changeDimension(((ServerLevel) player.level).getServer().getLevel(dim), new CustomTeleporter(spawnPos));
-        } else {
-            ServerLevel serverLevel = (ServerLevel) player.level;
-            MinecraftServer minecraftServer = serverLevel.getServer();
-            ServerLevel overworld = minecraftServer.getLevel(Level.OVERWORLD);
+        if (player.getItemInHand(hand).getItem().equals(item.get()) && state.getValue(BITES) != 0) {
+            BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
+            world.setBlockAndUpdate(pos, newState);
 
-            BlockPos spawnPos = overworld.getSharedSpawnPos();
-            player.changeDimension(overworld, new CustomTeleporter(spawnPos));
+            player.getItemInHand(hand).shrink(1);
+            return InteractionResult.SUCCESS;
         }
 
+        if (state.getValue(BITES) < 6) {
+            BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
+            world.setBlockAndUpdate(pos, newState);
+
+            if (((ServerPlayer) player).getRespawnPosition() != null) {
+                ResourceKey<Level> dim = ((ServerPlayer) player).getRespawnDimension();
+                BlockPos spawnPos = ((ServerPlayer) player).getRespawnPosition();
+
+                player.changeDimension(player.level.getServer().getLevel(dim), new CustomTeleporter(spawnPos));
+            } else {
+                ServerLevel overworld = player.level.getServer().getLevel(Level.OVERWORLD);
+
+                BlockPos spawnPos = overworld.getSharedSpawnPos();
+                player.changeDimension(overworld, new CustomTeleporter(spawnPos));
+            }
+        }
         return InteractionResult.SUCCESS;
     }
 }

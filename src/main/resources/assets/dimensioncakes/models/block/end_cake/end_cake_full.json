@@ -1,0 +1,9 @@
+{
+  "parent": "block/cake",
+  "textures": {
+    "particle": "dimensioncakes:blocks/end_cake/end_cake_2",
+    "bottom": "dimensioncakes:blocks/end_cake/end_cake_0",
+    "top": "dimensioncakes:blocks/end_cake/end_cake_1",
+    "side": "dimensioncakes:blocks/end_cake/end_cake_2"
+  }
+}

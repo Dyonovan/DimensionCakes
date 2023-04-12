@@ -1,24 +1,24 @@
 package com.dyonovan.dimensioncakes.common.blocks;
 
+import com.dyonovan.dimensioncakes.DimensionCakesConfig;
 import com.dyonovan.dimensioncakes.common.tiles.NetherCakeTileEntity;
 import com.dyonovan.dimensioncakes.util.CustomTeleporter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +37,18 @@ public class NetherCakeBlock extends BaseCakeBlock implements EntityBlock {
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if (world.isClientSide || player.level.dimension() == Level.NETHER || state.getValue(BITES) == 6) return InteractionResult.SUCCESS;
+        if (world.isClientSide || player.level.dimension() == Level.NETHER) return InteractionResult.SUCCESS;
+
+        String repairItem = DimensionCakesConfig.GENERAL.netherCakeRefill.get();
+        final RegistryObject<Item> item = RegistryObject.create(new ResourceLocation(repairItem), ForgeRegistries.ITEMS);
+
+        if (player.getItemInHand(hand).getItem().equals(item.get()) && state.getValue(BITES) != 0) {
+            BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
+            world.setBlockAndUpdate(pos, newState);
+
+            player.getItemInHand(hand).shrink(1);
+            return InteractionResult.SUCCESS;
+        }
 
         BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
         world.setBlockAndUpdate(pos, newState);

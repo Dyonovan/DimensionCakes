@@ -2,6 +2,14 @@
     "itemGroup.dimensioncakes": "Dimension Cakes",
 
     "block.dimensioncakes.nether_cake": "Nether Cake",
+    "block.dimensioncakes.end_cake": "End Cake",
+    "block.dimensioncakes.overworld_cake": "Overworld Cake",
 
-    "tooltip.dimensioncakes.bites_left": "Bites Left:"
+    "tooltip.dimensioncakes.bites_left": "Bites Left:",
+
+    "config.dimensioncakes.disableNetherPortal": "Disable the creation of Nether Portals",
+    "config.dimensioncakes.cakesStartEmpty": "Do cakes start empty and need to be filled",
+    "config.dimensioncakes.endCakeRefill": "Item that will refill End Cake ie: minecraft:apple",
+    "config.dimensioncakes.netherCakeRefill": "Item that will refill the Nether Cake ie: minecraft:apple",
+    "config.dimensioncakes.overworldCakeRefill": "Item that will refill the Overworld Cake ie: minecraft:apple"
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DSD",
+    "SCS",
+    "DSD"
+  ],
+  "key": {
+    "S": {"item": "minecraft:ender_pearl"},
+    "C": {"item": "minecraft:cake"},
+    "D": {"item": "minecraft:diamond"}
+  },
+  "result": {
+    "item": "dimensioncakes:overworld_cake"
+  }
+}

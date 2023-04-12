@@ -1,8 +1,7 @@
-package com.dyonovan.dimensioncakes.addons.theoneprobe;
+package com.dyonovan.dimensioncakes.compat.theoneprobe;
 
 import com.dyonovan.dimensioncakes.DimensionCakes;
-import com.dyonovan.dimensioncakes.common.blocks.NetherCakeBlock;
-import com.dyonovan.dimensioncakes.common.tiles.NetherCakeTileEntity;
+import com.dyonovan.dimensioncakes.common.blocks.BaseCakeBlock;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,8 +22,8 @@ public class TOPPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Voi
 
     @Override
     public void addProbeInfo(ProbeMode probeMode, IProbeInfo info, Player player, Level level, BlockState blockState, IProbeHitData data) {
-        if (level.getBlockEntity(data.getPos()) instanceof NetherCakeTileEntity cake) {
-            int bites = cake.getBlockState().getValue(NetherCakeBlock.BITES);
+        if (level.getBlockState(data.getPos()).getBlock() instanceof BaseCakeBlock) {
+            int bites = level.getBlockState(data.getPos()).getValue(BaseCakeBlock.BITES);
 
             final IProbeInfo bitesInfo = info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             bitesInfo.mcText(Component.translatable("tooltip." + DimensionCakes.MODID + ".bites_left"));

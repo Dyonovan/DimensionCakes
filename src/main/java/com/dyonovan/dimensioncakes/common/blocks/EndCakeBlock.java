@@ -1,27 +1,23 @@
 package com.dyonovan.dimensioncakes.common.blocks;
 
-import com.dyonovan.dimensioncakes.common.capability.DimSpawnPos;
-import com.dyonovan.dimensioncakes.common.capability.IDimSpawnPos;
+import com.dyonovan.dimensioncakes.DimensionCakesConfig;
 import com.dyonovan.dimensioncakes.util.CustomTeleporter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-
-public class EndCakeBlock extends Block {
-
-    private final HashMap<String, LazyOptional<IDimSpawnPos>> cache = new HashMap<>();
+public class EndCakeBlock extends BaseCakeBlock {
 
     public EndCakeBlock(Properties properties) {
         super(properties);
@@ -30,46 +26,47 @@ public class EndCakeBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if (world.isClientSide) return InteractionResult.SUCCESS;
+        if (world.isClientSide || player.level.dimension() == Level.END)
+            return InteractionResult.SUCCESS;
 
-        if (player.level.dimension() != Level.END) {
-            LazyOptional<IDimSpawnPos> targetCap = cache.get(Level.NETHER.location().toString());
+        String repairItem = DimensionCakesConfig.GENERAL.endCakeRefill.get();
+        final RegistryObject<Item> item = RegistryObject.create(new ResourceLocation(repairItem), ForgeRegistries.ITEMS);
 
-            if (targetCap == null) {
-                targetCap = player.getCapability(DimSpawnPos.INSTANCE, null);
-                cache.put(Level.END.location().toString(), targetCap);
-                targetCap.addListener(self -> cache.put(Level.END.location().toString(), null));
-            }
-            targetCap.ifPresent(iDimSpawnPos -> teleportPlayer(iDimSpawnPos, player));
+        if (player.getItemInHand(hand).getItem().equals(item.get()) && state.getValue(BITES) != 0) {
+            BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
+            world.setBlockAndUpdate(pos, newState);
+
+            player.getItemInHand(hand).shrink(1);
+            return InteractionResult.SUCCESS;
         }
+
+        BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
+        world.setBlockAndUpdate(pos, newState);
+
+        teleportPlayer(state, player);
+
         return InteractionResult.SUCCESS;
     }
 
-    private void teleportPlayer(IDimSpawnPos data, Player player) {
-        BlockPos storedPos = data.getDimPos(Level.END.location().toString());
+    private void teleportPlayer(BlockState data, Player player) {
 
-        if (storedPos == null) {
-            data.setDimPos(Level.END.location().toString(), ServerLevel.END_SPAWN_POINT);
-            storedPos = ServerLevel.END_SPAWN_POINT;
-        }
+        BlockPos teleportPos = ServerLevel.END_SPAWN_POINT;
 
-        ServerLevel serverLevel = (ServerLevel)player.level;
-        MinecraftServer minecraftServer = serverLevel.getServer();
-        ServerLevel end = minecraftServer.getLevel(Level.END);
+        ServerLevel end = player.level.getServer().getLevel(Level.END);
 
-        if (end.getBlockState(storedPos.below()).getBlock() != Blocks.OBSIDIAN) {
-            BlockPos.MutableBlockPos blockPos = storedPos.below().mutable();
+        if (end.getBlockState(teleportPos.below()).getBlock() != Blocks.OBSIDIAN) {
+            BlockPos.MutableBlockPos blockPos = teleportPos.below().mutable();
 
-            for(int i = -2; i <= 2; ++i) {
+            for (int i = -2; i <= 2; ++i) {
                 for (int j = -2; j <= 2; ++j) {
                     for (int k = -1; k < 3; ++k) {
                         BlockState blockState = k == -1 ? Blocks.OBSIDIAN.defaultBlockState() : Blocks.AIR.defaultBlockState();
-                        end.setBlockAndUpdate(blockPos.set(storedPos.below()).move(j, k, i), blockState);
+                        end.setBlockAndUpdate(blockPos.set(teleportPos.below()).move(j, k, i), blockState);
                     }
                 }
             }
         }
 
-        player.changeDimension(end, new CustomTeleporter(storedPos));
+        player.changeDimension(end, new CustomTeleporter(teleportPos));
     }
 }

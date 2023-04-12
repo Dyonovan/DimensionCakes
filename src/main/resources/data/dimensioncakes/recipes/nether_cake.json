@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SCS",
+    "SSS"
+  ],
+  "key": {
+    "S": {"item": "minecraft:obsidian"},
+    "C": {"item": "minecraft:cake"}
+  },
+  "result": {
+    "item": "dimensioncakes:nether_cake"
+  }
+}
