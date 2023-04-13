@@ -4,10 +4,14 @@
     "block.dimensioncakes.nether_cake": "Nether Cake",
     "block.dimensioncakes.end_cake": "End Cake",
     "block.dimensioncakes.overworld_cake": "Overworld Cake",
+    "block.dimensioncakes.paired_cake": "Paired Cake",
 
     "block.dimensioncakes.nether_cake.tooltip": "Refilled with %s",
     "block.dimensioncakes.end_cake.tooltip": "Refilled with %s",
     "block.dimensioncakes.overworld_cake.tooltip": "Refilled with %s",
+    "block.dimensioncakes.paired_cake.tooltip": "UUID: %s",
+
+    "error.block.dimensioncakes.paired_cake.tooltip": "Invalid Item. Place 2 in a crafting grid to turn into a matched set.",
 
     "tooltip.dimensioncakes.bites_left": "Bites Left:",
 
@@ -17,5 +21,7 @@
     "config.dimensioncakes.netherCakeRefill": "Item that will refill the Nether Cake ie: minecraft:apple",
     "config.dimensioncakes.overworldCakeRefill": "Item that will refill the Overworld Cake ie: minecraft:apple",
 
-    "msg.dimensioncakes.endportal": "End Portals Are Disabled"
+    "msg.dimensioncakes.endportal": "End Portals Are Disabled",
+    "msg.dimensioncakes.pairedcake.place": "Error placing block. No UUID on Item",
+    "msg.dimensioncakes.pairedcake.nopair": "Can't find matching cake. Refer to JEI for more information."
 }

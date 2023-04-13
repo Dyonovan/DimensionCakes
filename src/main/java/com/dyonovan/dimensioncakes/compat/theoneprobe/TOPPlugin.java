@@ -1,14 +1,18 @@
 package com.dyonovan.dimensioncakes.compat.theoneprobe;
 
 import com.dyonovan.dimensioncakes.DimensionCakes;
+import com.dyonovan.dimensioncakes.DimensionCakesConfig;
 import com.dyonovan.dimensioncakes.common.blocks.BaseCakeBlock;
+import com.dyonovan.dimensioncakes.common.tiles.PairedCakeTileEntity;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.UUID;
 import java.util.function.Function;
 
 public class TOPPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
@@ -26,8 +30,17 @@ public class TOPPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Voi
             int bites = level.getBlockState(data.getPos()).getValue(BaseCakeBlock.BITES);
 
             final IProbeInfo bitesInfo = info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
+
             bitesInfo.mcText(Component.translatable("tooltip." + DimensionCakes.MODID + ".bites_left"));
             info.progress(6 - bites, 6);
+
+            if (DimensionCakesConfig.GENERAL.devMode.get()) {
+                BlockEntity entity = level.getBlockEntity(data.getPos());
+                if (entity instanceof PairedCakeTileEntity) {
+                    UUID uuid = ((PairedCakeTileEntity) entity).getUuid();
+                    info.mcText(Component.literal(uuid.toString()));
+                }
+            }
         }
     }
 

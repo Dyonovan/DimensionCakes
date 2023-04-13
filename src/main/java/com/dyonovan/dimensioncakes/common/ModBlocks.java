@@ -4,8 +4,11 @@ import com.dyonovan.dimensioncakes.DimensionCakes;
 import com.dyonovan.dimensioncakes.common.blocks.EndCakeBlock;
 import com.dyonovan.dimensioncakes.common.blocks.NetherCakeBlock;
 import com.dyonovan.dimensioncakes.common.blocks.OverworldCakeBlock;
+import com.dyonovan.dimensioncakes.common.blocks.PairedCakeBlock;
 import com.dyonovan.dimensioncakes.common.items.DCItemBlock;
+import com.dyonovan.dimensioncakes.common.items.PairedCakeItemBlock;
 import com.dyonovan.dimensioncakes.common.tiles.NetherCakeTileEntity;
+import com.dyonovan.dimensioncakes.common.tiles.PairedCakeTileEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -53,6 +56,20 @@ public class ModBlocks {
                     .strength(1.0f, 1.0f)));
     public static RegistryObject<DCItemBlock> itemOverworldCake = fromBlock(blockOverworkdCake, new Item.Properties().tab(DCCreativeTab.INSTANCE));
 
+    public static RegistryObject<PairedCakeBlock> blockPairedCake = BLOCKS.register("paired_cake", () ->
+            new PairedCakeBlock(BlockBehaviour.Properties
+                    .of(Material.CAKE)
+                    .sound(SoundType.SAND)
+                    .noOcclusion()
+                    .strength(1.0f, 1.0f)));
+    public static RegistryObject<PairedCakeItemBlock> itemPairedCake = ITEMS.register(blockPairedCake.getId().getPath(), () ->
+            new PairedCakeItemBlock(blockPairedCake.get(), new Item.Properties().tab(DCCreativeTab.INSTANCE).stacksTo(2)));
+    public static RegistryObject<BlockEntityType<PairedCakeTileEntity>> tilePairedCake =
+            BLOCK_ENTITIES.register("paired_cake", () ->
+                    BlockEntityType.Builder
+                            .of(PairedCakeTileEntity::new, blockPairedCake.get())
+                            .build(null));
+
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -61,9 +78,10 @@ public class ModBlocks {
         BLOCK_ENTITIES.register(bus);
     }
 
-    private ModBlocks() {}
+    private ModBlocks() {
+    }
 
-    private static <B extends Block>RegistryObject<DCItemBlock> fromBlock(RegistryObject<B> block, Item.Properties properties) {
+    private static <B extends Block> RegistryObject<DCItemBlock> fromBlock(RegistryObject<B> block, Item.Properties properties) {
         return ITEMS.register(block.getId().getPath(), () -> new DCItemBlock(block.get(), properties));
     }
 }

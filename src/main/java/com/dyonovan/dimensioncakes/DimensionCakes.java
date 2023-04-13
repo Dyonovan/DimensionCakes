@@ -1,6 +1,8 @@
 package com.dyonovan.dimensioncakes;
 
 import com.dyonovan.dimensioncakes.common.ModBlocks;
+import com.dyonovan.dimensioncakes.common.blocks.PairedCakeBlock;
+import com.dyonovan.dimensioncakes.common.tiles.PairedCakeTileEntity;
 import com.dyonovan.dimensioncakes.compat.theoneprobe.TOPPlugin;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
@@ -10,18 +12,16 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -51,8 +51,18 @@ public class DimensionCakes {
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-
+    public void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
+        if (!event.getLevel().isClientSide() && event.getPlacedBlock().getBlock() instanceof PairedCakeBlock) {
+            BlockEntity tile = event.getLevel().getBlockEntity(event.getPos());
+            if (tile instanceof PairedCakeTileEntity) {
+                if (((PairedCakeTileEntity) tile).getUuid() == null) {
+                    event.setCanceled(true);
+                    if (event.getEntity() instanceof Player) {
+                        event.getEntity().sendSystemMessage(Component.translatable("msg." + DimensionCakes.MODID + ".pairedcake.place").withStyle(ChatFormatting.RED));
+                    }
+                }
+            }
+        }
     }
 
     @SubscribeEvent
@@ -64,21 +74,13 @@ public class DimensionCakes {
 
     @SubscribeEvent
     public void cancelEndPortalCreation(PlayerInteractEvent.RightClickBlock event) {
-        if (DimensionCakesConfig.GENERAL.disableEndPortal.get() && !event.getLevel().isClientSide()) {
+        if (!event.getLevel().isClientSide() && DimensionCakesConfig.GENERAL.disableEndPortal.get()) {
             ItemStack stack = event.getItemStack();
             Player player = event.getEntity();
             if (!stack.isEmpty() && stack.getItem().equals(Items.ENDER_EYE) && event.getLevel().getBlockState(event.getPos()).getBlock() == Blocks.END_PORTAL_FRAME) {
                 event.setCanceled(true);
                 player.sendSystemMessage(Component.translatable("msg." + DimensionCakes.MODID + ".endportal").withStyle(ChatFormatting.RED));
             }
-        }
-    }
-
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-
         }
     }
 }

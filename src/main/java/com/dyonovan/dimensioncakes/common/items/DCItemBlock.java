@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class DCItemBlock extends BlockItem {
+
     public DCItemBlock(Block blockIn, Properties builder) {
         super(blockIn, builder);
     }

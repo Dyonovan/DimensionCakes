@@ -36,7 +36,7 @@ public class NetherCakeBlock extends BaseCakeBlock implements EntityBlock {
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if (world.isClientSide || player.level.dimension() == Level.NETHER) return InteractionResult.SUCCESS;
+        if (world.isClientSide || player.level.dimension() == Level.NETHER) return InteractionResult.sidedSuccess(!world.isClientSide);
 
         String repairItem = DimensionCakesConfig.GENERAL.netherCakeRefill.get();
         Item item =  ForgeRegistries.ITEMS.getValue(new ResourceLocation(repairItem));
@@ -46,7 +46,9 @@ public class NetherCakeBlock extends BaseCakeBlock implements EntityBlock {
                 BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
                 world.setBlockAndUpdate(pos, newState);
 
-                player.getItemInHand(hand).shrink(1);
+                if (!player.hasPermissions(4)) {
+                    player.getItemInHand(hand).shrink(1);
+                }
             }
             return InteractionResult.SUCCESS;
         }

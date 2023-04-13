@@ -21,9 +21,12 @@ public class DimensionCakesConfig {
         public final ForgeConfigSpec.ConfigValue<String> endCakeRefill;
         public final ForgeConfigSpec.ConfigValue<String> netherCakeRefill;
         public final ForgeConfigSpec.ConfigValue<String> overworldCakeRefill;
+        public final ForgeConfigSpec.ConfigValue<String> pairedCakeRefill;
 
         public final ForgeConfigSpec.ConfigValue<Boolean> disableNetherPortal;
         public final ForgeConfigSpec.ConfigValue<Boolean> disableEndPortal;
+
+        public final ForgeConfigSpec.ConfigValue<Boolean> devMode;
 
         private General(ForgeConfigSpec.Builder builder) {
             builder.push("Refill Materials");
@@ -43,6 +46,11 @@ public class DimensionCakesConfig {
                     .translation("config." + DimensionCakes.MODID + ".overworldCakeRefill")
                     .define("overworldCakeRefill", "minecraft:stone");
 
+            pairedCakeRefill = builder
+                    .comment("Item that will refill the Paired Cake ie: minecraft:apple")
+                    .translation("config." + DimensionCakes.MODID + ".pairedCakeRefill")
+                    .define("pairedCakeRefill", "minecraft:ender_pearl");
+
             builder.pop();
 
             builder.push("Portals");
@@ -56,6 +64,15 @@ public class DimensionCakesConfig {
                     .comment("Disable the creation of End Portals")
                     .translation("config." + DimensionCakes.MODID + ".disableEndPortal")
                     .define("disableEndPortal", true);
+
+            builder.pop();
+
+            builder.push("Dev - Not Recommended to Change");
+
+            devMode = builder
+                    .comment("Enable Dev Mode")
+                    .translation("config." + DimensionCakes.MODID + ".devMode")
+                    .define("devMode", false);
 
             builder.pop();
         }
