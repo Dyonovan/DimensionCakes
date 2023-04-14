@@ -7,8 +7,8 @@ import com.dyonovan.dimensioncakes.common.blocks.OverworldCakeBlock;
 import com.dyonovan.dimensioncakes.common.blocks.PairedCakeBlock;
 import com.dyonovan.dimensioncakes.common.items.DCItemBlock;
 import com.dyonovan.dimensioncakes.common.items.PairedCakeItemBlock;
-import com.dyonovan.dimensioncakes.common.tiles.NetherCakeTileEntity;
-import com.dyonovan.dimensioncakes.common.tiles.PairedCakeTileEntity;
+import com.dyonovan.dimensioncakes.common.tiles.NetherCakeBlockEntity;
+import com.dyonovan.dimensioncakes.common.tiles.PairedCakeBlockEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -34,10 +34,10 @@ public class ModBlocks {
                     .noOcclusion()
                     .strength(1.0f, 1.0f)));
     public static RegistryObject<DCItemBlock> itemNetherCake = fromBlock(blockNetherCake, new Item.Properties().tab(DCCreativeTab.INSTANCE));
-    public static RegistryObject<BlockEntityType<NetherCakeTileEntity>> tileNetherCake =
+    public static RegistryObject<BlockEntityType<NetherCakeBlockEntity>> tileNetherCake =
             BLOCK_ENTITIES.register("nether_cake", () ->
                     BlockEntityType.Builder
-                            .of(NetherCakeTileEntity::new, blockNetherCake.get())
+                            .of(NetherCakeBlockEntity::new, blockNetherCake.get())
                             .build(null));
 
     public static RegistryObject<EndCakeBlock> blockEndCake = BLOCKS.register("end_cake", () ->
@@ -64,10 +64,10 @@ public class ModBlocks {
                     .strength(1.0f, 1.0f)));
     public static RegistryObject<PairedCakeItemBlock> itemPairedCake = ITEMS.register(blockPairedCake.getId().getPath(), () ->
             new PairedCakeItemBlock(blockPairedCake.get(), new Item.Properties().tab(DCCreativeTab.INSTANCE).stacksTo(2)));
-    public static RegistryObject<BlockEntityType<PairedCakeTileEntity>> tilePairedCake =
+    public static RegistryObject<BlockEntityType<PairedCakeBlockEntity>> tilePairedCake =
             BLOCK_ENTITIES.register("paired_cake", () ->
                     BlockEntityType.Builder
-                            .of(PairedCakeTileEntity::new, blockPairedCake.get())
+                            .of(PairedCakeBlockEntity::new, blockPairedCake.get())
                             .build(null));
 
     public static void init() {

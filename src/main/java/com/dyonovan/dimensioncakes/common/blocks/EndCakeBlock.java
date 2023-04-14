@@ -36,15 +36,17 @@ public class EndCakeBlock extends BaseCakeBlock {
                 BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
                 world.setBlockAndUpdate(pos, newState);
 
-                if (!player.hasPermissions(4)) {
+                if (!player.isCreative()) {
                     player.getItemInHand(hand).shrink(1);
                 }
             }
             return InteractionResult.SUCCESS;
         }
 
-        BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
-        world.setBlockAndUpdate(pos, newState);
+        if (!player.isCreative()) {
+            BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
+            world.setBlockAndUpdate(pos, newState);
+        }
 
         teleportPlayer(player);
 
@@ -69,7 +71,6 @@ public class EndCakeBlock extends BaseCakeBlock {
                 }
             }
         }
-
         player.changeDimension(end, new CustomTeleporter(teleportPos));
     }
 }

@@ -8,8 +8,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -22,26 +25,46 @@ public class PairedCakeItemBlock extends BlockItem {
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, Level level, Player player) {
+    public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
 
         if (stack.getItem().equals(ModBlocks.itemPairedCake.get())) {
+            CompoundTag uuidTag = new CompoundTag();
+            uuidTag.putUUID("uuid", UUID.randomUUID());
+
             CompoundTag tag = new CompoundTag();
-            tag.putUUID("uuid", UUID.randomUUID());
+            tag.put("BlockEntityTag", uuidTag);
+
             stack.setTag(tag);
         }
     }
 
+    @Override
+    protected boolean canPlace(BlockPlaceContext placeContext, @NotNull BlockState blockState) {
+        if (placeContext.getItemInHand().hasTag()) {
+            CompoundTag tag = placeContext.getItemInHand().getTagElement("BlockEntityTag");
+            if (tag != null) {
+                if (tag.contains("uuid"))
+                    return super.canPlace(placeContext, blockState);
+            }
+        }
+        return false;
+    }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack itemStack, @Nullable Level world, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemStack, world, tooltip, flag);
 
         if (itemStack.hasTag()) {
-            UUID uuid = itemStack.getTag().getUUID("uuid");
-            tooltip.add(Component.translatable(this.getDescriptionId() + ".tooltip", uuid.toString()));
-        } else {
-            tooltip.add(Component.translatable("error." + this.getDescriptionId() + ".tooltip").withStyle(ChatFormatting.RED));
+            CompoundTag tag = itemStack.getTagElement("BlockEntityTag");
+            if (tag != null) {
+                if (tag.contains("uuid")) {
+                    UUID uuid = tag.getUUID("uuid");
+                    tooltip.add(Component.translatable(this.getDescriptionId() + ".tooltip", uuid.toString()));
+                    return;
+                }
+            }
         }
+        tooltip.add(Component.translatable("error." + this.getDescriptionId() + ".tooltip").withStyle(ChatFormatting.RED));
     }
 }

@@ -36,7 +36,7 @@ public class OverworldCakeBlock extends BaseCakeBlock {
                 BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
                 world.setBlockAndUpdate(pos, newState);
 
-                if (!player.hasPermissions(4)) {
+                if (!player.isCreative()) {
                     player.getItemInHand(hand).shrink(1);
                 }
             }
@@ -44,8 +44,10 @@ public class OverworldCakeBlock extends BaseCakeBlock {
         }
 
         if (state.getValue(BITES) < 6) {
-            BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
-            world.setBlockAndUpdate(pos, newState);
+            if (!player.isCreative()) {
+                BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
+                world.setBlockAndUpdate(pos, newState);
+            }
 
             if (((ServerPlayer) player).getRespawnPosition() != null) {
                 ResourceKey<Level> dim = ((ServerPlayer) player).getRespawnDimension();

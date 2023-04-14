@@ -3,7 +3,7 @@ package com.dyonovan.dimensioncakes.compat.theoneprobe;
 import com.dyonovan.dimensioncakes.DimensionCakes;
 import com.dyonovan.dimensioncakes.DimensionCakesConfig;
 import com.dyonovan.dimensioncakes.common.blocks.BaseCakeBlock;
-import com.dyonovan.dimensioncakes.common.tiles.PairedCakeTileEntity;
+import com.dyonovan.dimensioncakes.common.tiles.PairedCakeBlockEntity;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,8 +36,8 @@ public class TOPPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Voi
 
             if (DimensionCakesConfig.GENERAL.devMode.get()) {
                 BlockEntity entity = level.getBlockEntity(data.getPos());
-                if (entity instanceof PairedCakeTileEntity) {
-                    UUID uuid = ((PairedCakeTileEntity) entity).getUuid();
+                if (entity instanceof PairedCakeBlockEntity) {
+                    UUID uuid = ((PairedCakeBlockEntity) entity).getUuid();
                     info.mcText(Component.literal(uuid.toString()));
                 }
             }

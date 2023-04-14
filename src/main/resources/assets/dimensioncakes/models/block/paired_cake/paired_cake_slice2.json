@@ -1,0 +1,10 @@
+{
+	"parent": "block/cake_slice2",
+	"textures": {
+        "particle": "dimensioncakes:blocks/paired_cake/paired_cake_2",
+        "bottom": "dimensioncakes:blocks/paired_cake/paired_cake_0",
+        "top": "dimensioncakes:blocks/paired_cake/paired_cake_1",
+        "side": "dimensioncakes:blocks/paired_cake/paired_cake_2",
+        "inside": "dimensioncakes:blocks/paired_cake/paired_cake_3"
+    }
+}

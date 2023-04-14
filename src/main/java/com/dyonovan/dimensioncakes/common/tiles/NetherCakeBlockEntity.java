@@ -7,11 +7,11 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class NetherCakeTileEntity extends BlockEntity {
+public class NetherCakeBlockEntity extends BlockEntity {
 
     private BlockPos teleportPos;
 
-    public NetherCakeTileEntity(BlockPos pos, BlockState state) {
+    public NetherCakeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlocks.tileNetherCake.get(), pos, state);
     }
 

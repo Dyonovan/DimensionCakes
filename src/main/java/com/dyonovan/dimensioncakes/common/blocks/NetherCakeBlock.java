@@ -1,7 +1,7 @@
 package com.dyonovan.dimensioncakes.common.blocks;
 
 import com.dyonovan.dimensioncakes.DimensionCakesConfig;
-import com.dyonovan.dimensioncakes.common.tiles.NetherCakeTileEntity;
+import com.dyonovan.dimensioncakes.common.tiles.NetherCakeBlockEntity;
 import com.dyonovan.dimensioncakes.util.CustomTeleporter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +31,7 @@ public class NetherCakeBlock extends BaseCakeBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new NetherCakeTileEntity(pos, state);
+        return new NetherCakeBlockEntity(pos, state);
     }
 
     @Override
@@ -46,26 +46,28 @@ public class NetherCakeBlock extends BaseCakeBlock implements EntityBlock {
                 BlockState newState = state.setValue(BITES, state.getValue(BITES) - 1);
                 world.setBlockAndUpdate(pos, newState);
 
-                if (!player.hasPermissions(4)) {
+                if (!player.isCreative()) {
                     player.getItemInHand(hand).shrink(1);
                 }
             }
             return InteractionResult.SUCCESS;
         }
 
-        BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
-        world.setBlockAndUpdate(pos, newState);
+        if (!player.isCreative()) {
+            BlockState newState = state.setValue(BITES, state.getValue(BITES) + 1);
+            world.setBlockAndUpdate(pos, newState);
+        }
 
         BlockEntity entity = world.getBlockEntity(pos);
-        if (entity instanceof NetherCakeTileEntity) {
-            BlockPos teleportPos = ((NetherCakeTileEntity) entity).getTeleportPos();
-            teleportPlayer(teleportPos, player, (NetherCakeTileEntity) entity);
+        if (entity instanceof NetherCakeBlockEntity) {
+            BlockPos teleportPos = ((NetherCakeBlockEntity) entity).getTeleportPos();
+            teleportPlayer(teleportPos, player, (NetherCakeBlockEntity) entity);
         }
         return InteractionResult.SUCCESS;
     }
 
 
-    private void teleportPlayer(BlockPos storedPos, Player player, NetherCakeTileEntity entity) {
+    private void teleportPlayer(BlockPos storedPos, Player player, NetherCakeBlockEntity entity) {
         ServerLevel serverLevel = player.level.getServer().getLevel(Level.NETHER);
 
         if (serverLevel == null) return;

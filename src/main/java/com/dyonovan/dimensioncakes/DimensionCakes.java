@@ -1,19 +1,20 @@
 package com.dyonovan.dimensioncakes;
 
 import com.dyonovan.dimensioncakes.common.ModBlocks;
-import com.dyonovan.dimensioncakes.common.blocks.PairedCakeBlock;
-import com.dyonovan.dimensioncakes.common.tiles.PairedCakeTileEntity;
+import com.dyonovan.dimensioncakes.common.commands.GivePairedCake;
 import com.dyonovan.dimensioncakes.compat.theoneprobe.TOPPlugin;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,7 +51,7 @@ public class DimensionCakes {
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
         if (!event.getLevel().isClientSide() && event.getPlacedBlock().getBlock() instanceof PairedCakeBlock) {
             BlockEntity tile = event.getLevel().getBlockEntity(event.getPos());
@@ -63,7 +64,7 @@ public class DimensionCakes {
                 }
             }
         }
-    }
+    }*/
 
     @SubscribeEvent
     public void cancelNetherPortalCreation(BlockEvent.PortalSpawnEvent event) {
@@ -82,5 +83,11 @@ public class DimensionCakes {
                 player.sendSystemMessage(Component.translatable("msg." + DimensionCakes.MODID + ".endportal").withStyle(ChatFormatting.RED));
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommandEvent(RegisterCommandsEvent event) {
+        CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
+        GivePairedCake.register(commandDispatcher);
     }
 }
