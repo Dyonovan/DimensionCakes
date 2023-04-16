@@ -1,7 +1,7 @@
 package com.dyonovan.dimensioncakes.common.blocks;
 
 import com.dyonovan.dimensioncakes.DimensionCakesConfig;
-import com.dyonovan.dimensioncakes.common.tiles.NetherCakeBlockEntity;
+import com.dyonovan.dimensioncakes.common.blockentities.NetherCakeBlockEntity;
 import com.dyonovan.dimensioncakes.util.CustomTeleporter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

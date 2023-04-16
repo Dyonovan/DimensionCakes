@@ -1,4 +1,4 @@
-package com.dyonovan.dimensioncakes.common.tiles;
+package com.dyonovan.dimensioncakes.common.blockentities;
 
 import com.dyonovan.dimensioncakes.common.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class NetherCakeBlockEntity extends BlockEntity {
 
@@ -23,7 +24,7 @@ public class NetherCakeBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
 
         if (teleportPos != null) tag.put("teleportPos", NbtUtils.writeBlockPos(teleportPos));

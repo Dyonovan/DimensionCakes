@@ -51,21 +51,6 @@ public class DimensionCakes {
         }
     }
 
-    /*@SubscribeEvent
-    public void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (!event.getLevel().isClientSide() && event.getPlacedBlock().getBlock() instanceof PairedCakeBlock) {
-            BlockEntity tile = event.getLevel().getBlockEntity(event.getPos());
-            if (tile instanceof PairedCakeTileEntity) {
-                if (((PairedCakeTileEntity) tile).getUuid() == null) {
-                    event.setCanceled(true);
-                    if (event.getEntity() instanceof Player) {
-                        event.getEntity().sendSystemMessage(Component.translatable("msg." + DimensionCakes.MODID + ".pairedcake.place").withStyle(ChatFormatting.RED));
-                    }
-                }
-            }
-        }
-    }*/
-
     @SubscribeEvent
     public void cancelNetherPortalCreation(BlockEvent.PortalSpawnEvent event) {
         if (DimensionCakesConfig.GENERAL.disableNetherPortal.get()) {

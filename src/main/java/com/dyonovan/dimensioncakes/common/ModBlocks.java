@@ -1,14 +1,13 @@
 package com.dyonovan.dimensioncakes.common;
 
 import com.dyonovan.dimensioncakes.DimensionCakes;
+import com.dyonovan.dimensioncakes.common.blockentities.NetherCakeBlockEntity;
+import com.dyonovan.dimensioncakes.common.blockentities.PairedCakeBlockEntity;
 import com.dyonovan.dimensioncakes.common.blocks.EndCakeBlock;
 import com.dyonovan.dimensioncakes.common.blocks.NetherCakeBlock;
 import com.dyonovan.dimensioncakes.common.blocks.OverworldCakeBlock;
 import com.dyonovan.dimensioncakes.common.blocks.PairedCakeBlock;
 import com.dyonovan.dimensioncakes.common.items.DCItemBlock;
-import com.dyonovan.dimensioncakes.common.items.PairedCakeItemBlock;
-import com.dyonovan.dimensioncakes.common.tiles.NetherCakeBlockEntity;
-import com.dyonovan.dimensioncakes.common.tiles.PairedCakeBlockEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -21,6 +20,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+@SuppressWarnings("unused")
 public class ModBlocks {
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DimensionCakes.MODID);
@@ -62,8 +62,7 @@ public class ModBlocks {
                     .sound(SoundType.SAND)
                     .noOcclusion()
                     .strength(1.0f, 1.0f)));
-    public static RegistryObject<PairedCakeItemBlock> itemPairedCake = ITEMS.register(blockPairedCake.getId().getPath(), () ->
-            new PairedCakeItemBlock(blockPairedCake.get(), new Item.Properties().tab(DCCreativeTab.INSTANCE).stacksTo(2)));
+    public static RegistryObject<DCItemBlock> itemPairedCake = fromBlock(blockPairedCake, new Item.Properties().tab(DCCreativeTab.INSTANCE));
     public static RegistryObject<BlockEntityType<PairedCakeBlockEntity>> tilePairedCake =
             BLOCK_ENTITIES.register("paired_cake", () ->
                     BlockEntityType.Builder
